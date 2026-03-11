@@ -165,17 +165,12 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 function toggleSrc(s){
-  // For pixabay/pexels only toggle if key exists
-  if((s==="pixabay"||s==="pexels")&&!document.getElementById(s+"Key").value.trim()){
-    document.getElementById("st"+s[0].toUpperCase()+s.slice(1)).textContent="Enter key first";
-    document.getElementById("st"+s[0].toUpperCase()+s.slice(1)).className="api-st err";
+  if((s==='pixabay'||s==='pexels')&&!document.getElementById(s+'Key').value.trim()){
+    setSt(s,'Enter key first','err');
     return;
   }
   srcEnabled[s]=!srcEnabled[s];
-  const el=document.getElementById("pill"+s[0].toUpperCase()+s.slice(1));
-  const names={inat:"iNaturalist",wiki:"Wikimedia",pixabay:"Pixabay",pexels:"Pexels"};
-  el.textContent=(srcEnabled[s]?"OK ":"Error: ")+names[s];
-  el.className="src-pill "+s+" "+(srcEnabled[s]?"on":"off");
+  pill(s,srcEnabled[s]);
 }
 
 function onKey(s){
@@ -187,8 +182,9 @@ function onKey(s){
 
 function pill(s,on){
   const el=document.getElementById('pill'+s[0].toUpperCase()+s.slice(1));
-  el.textContent = on ? `OK ${s[0].toUpperCase()+s.slice(1)}` : `⬜ ${s[0].toUpperCase()+s.slice(1)}`;
-  el.className = `src-pill ${s} ${on?'on':'off'}`;
+  const names={inat:'iNaturalist',wiki:'Wikimedia',pixabay:'Pixabay',pexels:'Pexels'};
+  el.textContent = (on ? 'ON ' : 'OFF ') + (names[s]||s);
+  el.className = 'src-pill '+s+' '+(on?'on':'off');
 }
 
 function setSt(s,msg,cls){
