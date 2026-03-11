@@ -148,6 +148,9 @@ input[type=text]:focus{border-color:var(--gm);background:#fff;}
 <script>
 const PLANTS=["Acer palmatum","Calamagrostis acutiflora","Hydrangea macrophylla","Hydrangea paniculata","Ilex crenata","Juniperus squamata","Loropetalum chinense","Nassella tenuissima","Ophiopogon japonicus","Osmanthus heterophyllus","Rhododendron","Rosa"];
 
+// Source states
+const srcEnabled={inat:true,wiki:true,pixabay:false,pexels:false};
+
 // Restore keys and auto-activate
 ['pixabay','pexels'].forEach(s=>{
   const v=localStorage.getItem('nz_'+s)||'';
@@ -157,9 +160,6 @@ const PLANTS=["Acer palmatum","Calamagrostis acutiflora","Hydrangea macrophylla"
     srcEnabled[s]=true;
   }
 });
-
-// Source states
-const srcEnabled={inat:true,wiki:true,pixabay:false,pexels:false};
 
 function toggleSrc(s){
   // For pixabay/pexels only toggle if key exists
