@@ -151,14 +151,17 @@ const PLANTS=["Acer palmatum","Calamagrostis acutiflora","Hydrangea macrophylla"
 // Source states
 const srcEnabled={inat:true,wiki:true,pixabay:false,pexels:false};
 
-// Restore keys and auto-activate
-['pixabay','pexels'].forEach(s=>{
-  const v=localStorage.getItem('nz_'+s)||'';
-  if(v){
-    document.getElementById(s+'Key').value=v;
-    pill(s,true);
-    srcEnabled[s]=true;
-  }
+// Restore keys on load (pill() called after DOM ready)
+document.addEventListener('DOMContentLoaded',function(){
+  ['pixabay','pexels'].forEach(s=>{
+    const v=localStorage.getItem('nz_'+s)||'';
+    if(v){
+      const el=document.getElementById(s+'Key');
+      if(el) el.value=v;
+      pill(s,true);
+      srcEnabled[s]=true;
+    }
+  });
 });
 
 function toggleSrc(s){
