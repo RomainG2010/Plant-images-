@@ -148,10 +148,14 @@ input[type=text]:focus{border-color:var(--gm);background:#fff;}
 <script>
 const PLANTS=["Acer palmatum","Calamagrostis acutiflora","Hydrangea macrophylla","Hydrangea paniculata","Ilex crenata","Juniperus squamata","Loropetalum chinense","Nassella tenuissima","Ophiopogon japonicus","Osmanthus heterophyllus","Rhododendron","Rosa"];
 
-// Restore keys
+// Restore keys and auto-activate
 ['pixabay','pexels'].forEach(s=>{
   const v=localStorage.getItem('nz_'+s)||'';
-  if(v){document.getElementById(s+'Key').value=v;pill(s,true);}
+  if(v){
+    document.getElementById(s+'Key').value=v;
+    pill(s,true);
+    srcEnabled[s]=true;
+  }
 });
 
 // Source states
@@ -189,19 +193,6 @@ function setSt(s,msg,cls){
   el.textContent=msg; el.className='api-st'+(cls?' '+cls:'');
 }
 
-// ── JSONP helper (bypasses CORS for local files) ──────────────────────────
-function jsonp(url){
-  return new Promise((resolve,reject)=>{
-    const cb='_cb'+Date.now()+Math.random().toString(36).slice(2);
-    window[cb]=function(data){ resolve(data); delete window[cb]; document.head.removeChild(script); };
-    const script=document.createElement('script');
-    script.src=url+(url.includes('?')?'&':'?')+'callback='+cb;
-    script.onerror=()=>{ reject(new Error('JSONP failed')); delete window[cb]; document.head.removeChild(script); };
-    document.head.appendChild(script);
-    setTimeout(()=>{ if(window[cb]){ reject(new Error('Timeout')); delete window[cb]; }},8000);
-  });
-}
-
 // ── TEST PIXABAY ──────────────────────────────────────────────────────────
 async function testPixabay(){
   const key=document.getElementById('pixabayKey').value.trim();
@@ -209,7 +200,8 @@ async function testPixabay(){
   document.getElementById('testPixabay').disabled=true;
   setSt('pixabay','Testing…','testing');
   try{
-    const d=await jsonp(`https://pixabay.com/api/?key=${key}&q=rose&per_page=3&image_type=photo`);
+    const r=await fetch(`https://pixabay.com/api/?key=${key}&q=rose&per_page=3&image_type=photo`);
+    const d=await r.json();
     if(d.totalHits>0){
       setSt('pixabay',`✅ Works! ${d.totalHits.toLocaleString()} images`,'ok');
       pill('pixabay',true); srcEnabled.pixabay=true;
@@ -344,9 +336,10 @@ async function searchWikimedia(query){
   return out;
 }
 
-// ── Pixabay (JSONP — works on local files!) ───────────────────────────────
+// ── Pixabay ───────────────────────────────────────────────────────────────
 async function searchPixabay(query,key){
-  const d=await jsonp(`https://pixabay.com/api/?key=${key}&q=${encodeURIComponent(query)}&image_type=photo&per_page=10&safesearch=true`);
+  const r=await fetch(`https://pixabay.com/api/?key=${key}&q=${encodeURIComponent(query)}&image_type=photo&per_page=10&safesearch=true`);
+  const d=await r.json();
   if(!d.hits)throw new Error('Invalid response');
   return d.hits.slice(0,8).map(h=>({
     src:'Pixabay',badge:'pixabay',name:query,
