@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Natura Zen — Plant Images</title>
+<title>Natura Zen — Images de Plantes</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;0,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--gd:#1A5C3A;--gm:#2A7D4F;--gl:#48C9B0;--cream:#F7F4EE;--text:#1a1a1a;--soft:#777;--bd:#e4e4e4;}
@@ -30,6 +30,12 @@ input[type=text]:focus{border-color:var(--gm);background:#fff;}
 .src-pill.pixabay.on{background:#fff8e0;color:#c07800;border-color:#E8A000;}
 .src-pill.pixabay.off{background:#f8f8f8;color:#aaa;border-color:#ddd;text-decoration:line-through;}
 .src-pill.pexels.on{background:#fde8e8;color:#c0392b;border-color:#c0392b;}
+.src-pill.flickr.on{background:#e8f0ff;color:#0063dc;border-color:#0063dc;}
+.src-pill.flickr.off{background:#f8f8f8;color:#aaa;border-color:#ddd;text-decoration:line-through;}
+.src-pill.perenual.on{background:#f0f8e8;color:#5a8a00;border-color:#5a8a00;}
+.src-pill.perenual.off{background:#f8f8f8;color:#aaa;border-color:#ddd;text-decoration:line-through;}
+.src-pill.trefle.on{background:#e8faf0;color:#00875a;border-color:#00875a;}
+.src-pill.trefle.off{background:#f8f8f8;color:#aaa;border-color:#ddd;text-decoration:line-through;}
 .src-pill.pexels.off{background:#f8f8f8;color:#aaa;border-color:#ddd;text-decoration:line-through;}
 
 .api-section{margin-bottom:12px;}
@@ -68,7 +74,7 @@ input[type=text]:focus{border-color:var(--gm);background:#fff;}
 .placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--gm);gap:5px;font-size:0.76rem;pointer-events:none;}
 .card-body{padding:10px 11px;}
 .badge{display:inline-block;font-size:0.63rem;padding:2px 7px;border-radius:20px;color:#fff;font-weight:600;margin-bottom:5px;}
-.badge.inat{background:#27AE60;}.badge.wiki{background:#2471A3;}.badge.pixabay{background:#c07800;}.badge.pexels{background:#c0392b;}
+.badge.inat{background:#27AE60;}.badge.wiki{background:#2471A3;}.badge.pixabay{background:#c07800;}.badge.pexels{background:#c0392b;}.badge.flickr{background:#0063dc;}.badge.perenual{background:#5a8a00;}.badge.trefle{background:#00875a;}
 .card-name{font-family:'Playfair Display',serif;font-style:italic;font-size:0.83rem;color:var(--text);margin-bottom:3px;line-height:1.3;}
 .card-lic{font-size:0.66rem;color:#27AE60;font-weight:500;margin-bottom:3px;}
 .card-author{font-size:0.64rem;color:#aaa;margin-bottom:8px;}
@@ -88,22 +94,17 @@ input[type=text]:focus{border-color:var(--gm);background:#fff;}
 </head>
 <body>
 <header>
-  <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-    <circle cx="13" cy="13" r="12" fill="#2A7D4F"/>
-    <circle cx="13" cy="10" r="5.5" fill="#f0f0e0" opacity=".9"/>
-    <path d="M10 12 Q13 7 16 12" fill="#48C9B0"/>
-    <path d="M7 16 Q13 11 19 16 Q16 19 10 19Z" fill="#27AE60"/>
-    <line x1="13" y1="13" x2="13" y2="19" stroke="#1A5C3A" stroke-width="1.2"/>
-  </svg>
-  <h1>Natura Zen<br>Plant Images</h1>
-  <small>4 free sources<br>commercial use ✓</small>
+  <img src="data:image/png;base64,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" alt="Natura Zen" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);">
+  <h1>Natura Zen<br>Images Plantes</h1>
+  <small id="txt-tagline">4 sources gratuites<br>usage commercial ✓</small>
+  <button id="langBtn" onclick="toggleLang()" style="margin-left:auto;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);border-radius:20px;padding:5px 12px;color:#fff;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;">🇬🇧 English</button>
 </header>
 
 <div class="wrap">
   <div class="card-ui">
     <div class="row">
-      <input id="q" type="text" placeholder="Latin name: Acer palmatum…">
-      <button class="btn" id="searchBtn" onclick="doSearch()">🔍 Search</button>
+      <input id="q" type="text" placeholder="Nom latin : Acer palmatum…">
+      <button class="btn" id="searchBtn" onclick="doSearch()">🔍 Rechercher</button>
     </div>
 
     <div class="sources-bar">
@@ -111,31 +112,58 @@ input[type=text]:focus{border-color:var(--gm);background:#fff;}
       <span class="src-pill wiki on" id="pillWiki" onclick="toggleSrc('wiki')">OK Wikimedia</span>
       <span class="src-pill pixabay off" id="pillPixabay" onclick="toggleSrc('pixabay')">OFF Pixabay</span>
       <span class="src-pill pexels off" id="pillPexels" onclick="toggleSrc('pexels')">OFF Pexels</span>
+      <span class="src-pill flickr off" id="pillFlickr" onclick="toggleSrc('flickr')">OFF Flickr</span>
+      <span class="src-pill perenual off" id="pillPerenual" onclick="toggleSrc('perenual')">OFF Perenual</span>
+      <span class="src-pill trefle off" id="pillTrefle" onclick="toggleSrc('trefle')">OFF Trefle</span>
     </div>
 
     <div class="api-section">
-      <h3>🔑 API Keys — unlock more sources</h3>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <h3 style="margin:0" id="txt-api-title">🔑 Clés API — plus de sources</h3>
+        <button onclick="document.getElementById('helpModal').style.display='flex'" style="background:#f0f0f0;border:1px solid #ddd;border-radius:20px;padding:3px 12px;font-size:0.8rem;cursor:pointer;color:#555;" id="txt-help-btn">? Comment obtenir les clés</button>
+      </div>
       <div class="api-row">
         <label>🟡 Pixabay</label>
-        <input type="text" id="pixabayKey" placeholder="Paste key…" oninput="onKey('pixabay')">
+        <input type="text" id="pixabayKey" placeholder="Coller la clé…" oninput="onKey('pixabay')">
         <button class="btn-test pixabay" id="testPixabay" onclick="testPixabay()">Test ▶</button>
         <span class="api-st" id="stPixabay"></span>
-        <a class="api-link" href="https://pixabay.com/api/docs/" target="_blank">Get free →</a>
+        <a class="api-link" href="https://pixabay.com/api/docs/" target="_blank" class="api-link-fr">Gratuit →</a>
       </div>
       <div class="api-row">
         <label>🔴 Pexels</label>
-        <input type="text" id="pexelsKey" placeholder="Paste key…" oninput="onKey('pexels')">
+        <input type="text" id="pexelsKey" placeholder="Coller la clé…" oninput="onKey('pexels')">
         <button class="btn-test pexels" id="testPexels" onclick="testPexels()">Test ▶</button>
         <span class="api-st" id="stPexels"></span>
-        <a class="api-link" href="https://www.pexels.com/api/" target="_blank" style="color:#c0392b">Get free →</a>
+        <a class="api-link" href="https://www.pexels.com/api/" target="_blank" style="color:#c0392b" class="api-link-fr">Gratuit →</a>
+      </div>
+      <div class="api-row">
+        <label>🔵 Flickr</label>
+        <input type="text" id="flickrKey" placeholder="Coller la clé…" oninput="onKey('flickr')">
+        <button class="btn-test" style="background:#0063dc" id="testFlickr" onclick="testFlickr()">Test ▶</button>
+        <span class="api-st" id="stFlickr"></span>
+        <a class="api-link" href="https://www.flickr.com/services/api/keys/" target="_blank" style="color:#0063dc" class="api-link-fr">Gratuit →</a>
+      </div>
+      <div class="api-row">
+        <label>🌿 Perenual</label>
+        <input type="text" id="perenualKey" placeholder="Coller la clé…" oninput="onKey('perenual')">
+        <button class="btn-test" style="background:#5a8a00" id="testPerenual" onclick="testPerenual()">Test ▶</button>
+        <span class="api-st" id="stPerenual"></span>
+        <a class="api-link" href="https://perenual.com/docs/api" target="_blank" style="color:#5a8a00" class="api-link-fr">Gratuit →</a>
+      </div>
+      <div class="api-row">
+        <label>🌱 Trefle</label>
+        <input type="text" id="trefleKey" placeholder="Coller la clé…" oninput="onKey('trefle')">
+        <button class="btn-test" style="background:#00875a" id="testTrefle" onclick="testTrefle()">Test ▶</button>
+        <span class="api-st" id="stTrefle"></span>
+        <a class="api-link" href="https://trefle.io/users/sign_up" target="_blank" style="color:#00875a" class="api-link-fr">Gratuit →</a>
       </div>
     </div>
 
-    <div class="chips-label">Your plants — tap to search:</div>
+    <div class="chips-label"><span id="txt-chips">Vos plantes — cliquez pour chercher :</span></div>
     <div class="chips" id="chips"></div>
   </div>
 
-  <div class="status" id="status">Tap a plant chip above to start searching.</div>
+  <div class="status" id="status">Cliquez sur une plante ci-dessus pour commencer.</div>
   <div class="grid" id="grid"></div>
 </div>
 
@@ -149,11 +177,11 @@ input[type=text]:focus{border-color:var(--gm);background:#fff;}
 const PLANTS=["Acer palmatum","Calamagrostis acutiflora","Hydrangea macrophylla","Hydrangea paniculata","Ilex crenata","Juniperus squamata","Loropetalum chinense","Nassella tenuissima","Ophiopogon japonicus","Osmanthus heterophyllus","Rhododendron","Rosa"];
 
 // Source states
-const srcEnabled={inat:true,wiki:true,pixabay:false,pexels:false};
+const srcEnabled={inat:true,wiki:true,pixabay:false,pexels:false,flickr:false,perenual:false,trefle:false};
 
 // Restore keys on load (pill() called after DOM ready)
 document.addEventListener('DOMContentLoaded',function(){
-  ['pixabay','pexels'].forEach(s=>{
+  ['pixabay','pexels','flickr','perenual','trefle'].forEach(s=>{
     const v=localStorage.getItem('nz_'+s)||'';
     if(v){
       const el=document.getElementById(s+'Key');
@@ -166,7 +194,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 function toggleSrc(s){
   if((s==='pixabay'||s==='pexels')&&!document.getElementById(s+'Key').value.trim()){
-    setSt(s,'Enter key first','err');
+    setSt(s,'Entrez la clé d abord','err');
     return;
   }
   srcEnabled[s]=!srcEnabled[s];
@@ -182,8 +210,8 @@ function onKey(s){
 
 function pill(s,on){
   const el=document.getElementById('pill'+s[0].toUpperCase()+s.slice(1));
-  const names={inat:'iNaturalist',wiki:'Wikimedia',pixabay:'Pixabay',pexels:'Pexels'};
-  el.textContent = (on ? 'ON ' : 'OFF ') + (names[s]||s);
+  const names={inat:'iNaturalist',wiki:'Wikimedia',pixabay:'Pixabay',pexels:'Pexels',flickr:'Flickr',perenual:'Perenual',trefle:'Trefle'};
+  el.textContent = (on ? 'Activé ' : 'Désactivé ') + (names[s]||s);
   el.className = 'src-pill '+s+' '+(on?'on':'off');
 }
 
@@ -198,22 +226,22 @@ async function testPixabay(){
   if(!key){setSt('pixabay','Enter key first','err');return;}
   const btn=document.getElementById('testPixabay');
   btn.disabled=true;
-  btn.textContent='Testing...';
-  setSt('pixabay','Testing...','testing');
+  btn.textContent='Test...';
+  setSt('pixabay','Test en cours...','testing');
   try{
     const r=await fetch('https://pixabay.com/api/?key='+key+'&q=rose&per_page=3&image_type=photo');
-    if(!r.ok){setSt('pixabay','Error: HTTP '+r.status,'err');btn.disabled=false;btn.textContent='Test ▶';return;}
+    if(!r.ok){setSt('pixabay','Erreur HTTP '+r.status,'err');btn.disabled=false;btn.textContent='Test ▶';return;}
     const d=await r.json();
     if(d.totalHits>0){
-      setSt('pixabay','OK! Works! '+d.totalHits.toLocaleString()+' images','ok');
+      setSt('pixabay','OK! Fonctionne ! '+d.totalHits.toLocaleString()+' images','ok');
       pill('pixabay',true); srcEnabled.pixabay=true;
       localStorage.setItem('nz_pixabay',key);
     } else {
-      setSt('pixabay','Error: Invalid key','err');
+      setSt('pixabay','Erreur : clé invalide','err');
       pill('pixabay',false); srcEnabled.pixabay=false;
     }
   }catch(e){
-    setSt('pixabay','Error: '+e.message,'err');
+    setSt('pixabay','Erreur : '+e.message,'err');
     pill('pixabay',false); srcEnabled.pixabay=false;
   }
   btn.disabled=false;btn.textContent='Test ▶';
@@ -224,20 +252,20 @@ async function testPexels(){
   const key=document.getElementById('pexelsKey').value.trim();
   if(!key){setSt('pexels','Enter key first','err');return;}
   const btn=document.getElementById('testPexels');
-  btn.disabled=true;btn.textContent='Testing...';
-  setSt('pexels','Testing...','testing');
+  btn.disabled=true;btn.textContent='Test...';
+  setSt('pexels','Test en cours...','testing');
   try{
     const r=await fetch('https://api.pexels.com/v1/search?query=rose&per_page=3',{headers:{Authorization:key}});
-    if(r.status===401){setSt('pexels','Error: Invalid key','err');pill('pexels',false);srcEnabled.pexels=false;}
+    if(r.status===401){setSt('pexels','Erreur : clé invalide','err');pill('pexels',false);srcEnabled.pexels=false;}
     else{
       const d=await r.json();
       if(d.photos&&d.photos.length){
-        setSt('pexels','OK! Works! '+d.total_results+' images','ok');
+        setSt('pexels','OK! Fonctionne ! '+d.total_results+' images','ok');
         pill('pexels',true);srcEnabled.pexels=true;
         localStorage.setItem('nz_pexels',key);
-      } else {setSt('pexels','Error: No results','err');pill('pexels',false);srcEnabled.pexels=false;}
+      } else {setSt('pexels','Erreur : aucun résultat','err');pill('pexels',false);srcEnabled.pexels=false;}
     }
-  }catch(e){setSt('pexels','Error: '+e.message,'err');pill('pexels',false);srcEnabled.pexels=false;}
+  }catch(e){setSt('pexels','Erreur : '+e.message,'err');pill('pexels',false);srcEnabled.pexels=false;}
   btn.disabled=false;btn.textContent='Test ▶';
 }
 
@@ -263,18 +291,24 @@ async function doSearch(){
   const status=document.getElementById('status');
   const grid=document.getElementById('grid');
   const btn=document.getElementById('searchBtn');
-  status.innerHTML='<span class="spinner"></span> Searching free databases…';
+  status.innerHTML='<span class="spinner"></span> Recherche en cours…';
   status.className='status loading';
   grid.innerHTML='';
   btn.disabled=true;
 
   const pixKey=document.getElementById('pixabayKey').value.trim();
   const pexKey=document.getElementById('pexelsKey').value.trim();
+  const flickrKey=document.getElementById('flickrKey').value.trim();
+  const perenualKey=document.getElementById('perenualKey').value.trim();
+  const trefleKey=document.getElementById('trefleKey').value.trim();
   const searches=[];
   if(srcEnabled.inat) searches.push(searchINat(query));
   if(srcEnabled.wiki) searches.push(searchWikimedia(query));
   if(srcEnabled.pixabay && pixKey) searches.push(searchPixabay(query,pixKey));
   if(srcEnabled.pexels && pexKey) searches.push(searchPexels(query,pexKey));
+  if(srcEnabled.flickr && flickrKey) searches.push(searchFlickr(query,flickrKey));
+  if(srcEnabled.perenual && perenualKey) searches.push(searchPerenual(query,perenualKey));
+  if(srcEnabled.trefle && trefleKey) searches.push(searchTrefle(query,trefleKey));
 
   const settled=await Promise.allSettled(searches);
   const results=settled.flatMap(r=>r.status==='fulfilled'?r.value:[]);
@@ -284,7 +318,7 @@ async function doSearch(){
     status.className='status err';
   } else {
     const srcs=[...new Set(results.map(r=>r.src))];
-    status.textContent=`OK ${results.length} images from: ${srcs.join(', ')}`;
+    status.textContent=`OK ${results.length} images depuis : ${srcs.join(', ')}`;
     status.className='status ok';
     results.forEach(r=>grid.appendChild(makeCard(r)));
   }
@@ -307,7 +341,7 @@ async function searchINat(query){
       const lic=(photo.license_code||'cc0').toUpperCase();
       const auth=obs.user?.name||obs.user?.login||'iNaturalist';
       out.push({src:'iNaturalist',badge:'inat',name:taxon.name,imgUrl:img,copyUrl:img,
-        license:`${lic} — Free ✓`,author:auth,
+        license:`${lic} — Gratuit ✓`,author:auth,
         pageUrl:`https://www.inaturalist.org/observations/${obs.id}`,
         lbInfo:`${taxon.name} · © ${auth} · ${lic}`});
       if(out.length>=8)return out;
@@ -331,7 +365,7 @@ async function searchWikimedia(query){
     const auth=(info.extmetadata?.Artist?.value||'').replace(/<[^>]+>/g,'').slice(0,40)||'Unknown';
     out.push({src:'Wikimedia',badge:'wiki',
       name:(item.title||'').replace('File:','').replace(/_/g,' ').split('.')[0].slice(0,40),
-      imgUrl:img,copyUrl:info.url,license:`${lic||'CC'} — Free ✓`,author:auth,
+      imgUrl:img,copyUrl:info.url,license:`${lic||'CC'} — Gratuit ✓`,author:auth,
       pageUrl:`https://commons.wikimedia.org/wiki/${encodeURIComponent(item.title)}`,
       lbInfo:`© ${auth} · ${lic} · Wikimedia`});
     if(out.length>=6)return out;
@@ -347,9 +381,9 @@ async function searchPixabay(query,key){
   return d.hits.slice(0,8).map(h=>({
     src:'Pixabay',badge:'pixabay',name:query,
     imgUrl:h.webformatURL,copyUrl:h.largeImageURL||h.webformatURL,
-    license:'Pixabay License — Free, no attribution ✓',
+    license:'Pixabay License — Gratuit, sans attribution ✓',
     author:h.user||'Pixabay',pageUrl:h.pageURL||'https://pixabay.com',
-    lbInfo:`© ${h.user} · Pixabay License · Free commercial use`
+    lbInfo:`© ${h.user} · Pixabay License · Usage commercial gratuit`
   }));
 }
 
@@ -361,9 +395,9 @@ async function searchPexels(query,key){
   return(d.photos||[]).map(p=>({
     src:'Pexels',badge:'pexels',name:query,
     imgUrl:p.src?.medium||p.src?.original,copyUrl:p.src?.original||p.src?.large,
-    license:'Pexels License — Free, no attribution ✓',
+    license:'Pexels License — Gratuit, sans attribution ✓',
     author:p.photographer||'Pexels',pageUrl:p.url||'https://pexels.com',
-    lbInfo:`© ${p.photographer} · Pexels · Free commercial use`
+    lbInfo:`© ${p.photographer} · Pexels · Usage commercial gratuit`
   }));
 }
 
@@ -377,10 +411,10 @@ function makeCard(r){
   const sl=(r.lbInfo||'').replace(/'/g,'%27');
   d.innerHTML=`
     <div class="img-wrap">
-      <div class="placeholder"><span style="font-size:1.8rem">🌿</span><span>Loading…</span></div>
+      <div class="placeholder"><span style="font-size:1.8rem">🌿</span><span>Chargement…</span></div>
       <img src="${si}" alt="${r.name}"
         onload="this.classList.add('loaded');this.previousElementSibling.style.display='none'"
-        onerror="this.style.display='none';this.previousElementSibling.querySelector('span:last-child').textContent='Unavailable'"
+        onerror="this.style.display='none';this.previousElementSibling.querySelector('span:last-child').textContent='Indisponible'"
         onclick="openLb('${si}','${sl}')">
     </div>
     <div class="card-body">
@@ -389,8 +423,8 @@ function makeCard(r){
       <div class="card-lic">${r.license}</div>
       <div class="card-author">© ${r.author}</div>
       <div class="actions">
-        <button class="btn-sm btn-copy" onclick="copyIt(this,'${sc}')">📋 Copy</button>
-        <button class="btn-sm btn-src" onclick="window.open('${sp}','_blank')">↗ View</button>
+        <button class="btn-sm btn-copy" onclick="copyIt(this,'${sc}')">📋 Copier</button>
+        <button class="btn-sm btn-src" onclick="window.open('${sp}','_blank')">↗ Voir</button>
       </div>
     </div>`;
   return d;
@@ -401,8 +435,8 @@ function copyIt(btn,url){
   (navigator.clipboard?.writeText(text)||Promise.reject()).catch(()=>{
     const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
   });
-  btn.textContent='OK Copied!';btn.classList.add('done');
-  setTimeout(()=>{btn.textContent='📋 Copy';btn.classList.remove('done');},2000);
+  btn.textContent='Copié !';btn.classList.add('done');
+  setTimeout(()=>{btn.textContent='📋 Copier';btn.classList.remove('done');},2000);
 }
 
 function openLb(url,info){
@@ -415,6 +449,182 @@ function closeLb(e){
     document.getElementById('lb').classList.remove('on');
 }
 document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+
+// ── LANGUAGE TOGGLE ───────────────────────────────────────────────────────
+let lang = 'fr';
+const i18n = {
+  fr: {
+    tagline: '4 sources gratuites<br>usage commercial ✓',
+    langBtn: '🇬🇧 English',
+    searchBtn: '🔍 Rechercher',
+    searchPlaceholder: 'Nom latin : Acer palmatum…',
+    chips: 'Vos plantes — cliquez pour chercher :',
+    statusDefault: 'Cliquez sur une plante ci-dessus pour commencer.',
+    apiTitle: '🔑 Clés API — plus de sources',
+    helpBtn: '? Comment obtenir les clés',
+    getFree: 'Gratuit →',
+    pastePlaceholder: 'Coller la clé…',
+    searching: '<span class="spinner"></span> Recherche en cours…',
+    noImages: (q) => `Aucune image trouvée pour "${q}". Vérifiez l'orthographe.`,
+    okImages: (n, s) => `OK ${n} images depuis : ${s}`,
+    enterKey: 'Entrez la clé d abord',
+    testing: 'Test en cours...',
+    testBtn: 'Test ▶',
+    works: (n) => `OK! Fonctionne ! ${n} images`,
+    invalidKey: 'Erreur : clé invalide',
+    noResults: 'Erreur : aucun résultat',
+    copyBtn: '📋 Copier',
+    copiedBtn: 'Copié !',
+    viewBtn: '↗ Voir',
+    loading: 'Chargement…',
+    unavailable: 'Indisponible',
+    onPill: 'Activé ',
+    offPill: 'Désactivé ',
+    helpTitle: 'Comment obtenir les clés API gratuites',
+    pixSubtitle: '🟡 Pixabay — 500 000 images gratuites',
+    pexSubtitle: '🔴 Pexels — 8 000+ images de plantes',
+    freeForever: '✓ Gratuit pour toujours — sans carte bancaire',
+    freeNote: 'Vos clés sont sauvegardées automatiquement. iNaturalist et Wikimedia fonctionnent sans clé — totalement gratuit !'
+  },
+  en: {
+    tagline: '4 free sources<br>commercial use ✓',
+    langBtn: '🇫🇷 Français',
+    searchBtn: '🔍 Search',
+    searchPlaceholder: 'Latin name: Acer palmatum…',
+    chips: 'Your plants — tap to search:',
+    statusDefault: 'Tap a plant chip above to start searching.',
+    apiTitle: '🔑 API Keys — unlock more sources',
+    helpBtn: '? How to get keys',
+    getFree: 'Get free →',
+    pastePlaceholder: 'Paste key…',
+    searching: '<span class="spinner"></span> Searching free databases…',
+    noImages: (q) => `No images found for "${q}". Try different spelling.`,
+    okImages: (n, s) => `OK ${n} images from: ${s}`,
+    enterKey: 'Enter key first',
+    testing: 'Testing...',
+    testBtn: 'Test ▶',
+    works: (n) => `OK! Works! ${n} images`,
+    invalidKey: 'Error: Invalid key',
+    noResults: 'Error: No results',
+    copyBtn: '📋 Copy',
+    copiedBtn: 'Copied!',
+    viewBtn: '↗ View',
+    loading: 'Loading…',
+    unavailable: 'Unavailable',
+    onPill: 'ON ',
+    offPill: 'OFF ',
+    helpTitle: 'How to get free API keys',
+    pixSubtitle: '🟡 Pixabay — 500,000 free images',
+    pexSubtitle: '🔴 Pexels — 8,000+ plant images',
+    freeForever: '✓ Free forever — no credit card needed',
+    freeNote: 'Your keys are saved in your browser automatically. iNaturalist and Wikimedia work without any key — completely free!'
+  }
+};
+
+function toggleLang() {
+  lang = lang === 'fr' ? 'en' : 'fr';
+  applyLang();
+}
+
+function applyLang() {
+  const t = i18n[lang];
+  // Header
+  document.getElementById('txt-tagline').innerHTML = t.tagline;
+  document.getElementById('langBtn').textContent = t.langBtn.replace(/<[^>]+>/g,'');
+  document.getElementById('langBtn').innerHTML = t.langBtn;
+  document.getElementById('searchBtn').textContent = t.searchBtn;
+  const qEl=document.getElementById('q'); if(qEl) qEl.placeholder=t.searchPlaceholder;
+  // Chips label
+  const cl = document.getElementById('txt-chips');
+  if(cl) cl.textContent = t.chips;
+  // API section
+  const at = document.getElementById('txt-api-title');
+  if(at) at.textContent = t.apiTitle;
+  const hb = document.getElementById('txt-help-btn');
+  if(hb) hb.textContent = t.helpBtn;
+  // Placeholders
+  const pk = document.getElementById('pixabayKey');
+  const pxk = document.getElementById('pexelsKey');
+  if(pk) pk.placeholder = t.pastePlaceholder;
+  if(pxk) pxk.placeholder = t.pastePlaceholder;
+  // Get free links
+  document.querySelectorAll('.api-link-fr').forEach(el => el.textContent = t.getFree);
+  // Status if showing default
+  const st = document.getElementById('status');
+  if(st && (st.textContent.includes('Cliquez') || st.textContent.includes('Tap a plant'))) {
+    st.textContent = t.statusDefault;
+  }
+  // Pills - update all current pill text
+  ['inat','wiki','pixabay','pexels','flickr','perenual','trefle'].forEach(s => {
+    const el = document.getElementById('pill'+s[0].toUpperCase()+s.slice(1));
+    if(el) {
+      const isOn = el.classList.contains('on');
+      const names = {inat:'iNaturalist',wiki:'Wikimedia',pixabay:'Pixabay',pexels:'Pexels'};
+      el.textContent = (isOn ? t.onPill : t.offPill) + names[s];
+    }
+  });
+}
+
 </script>
+
+  <!-- Help Modal -->
+  <div id="helpModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:#fff;border-radius:16px;padding:24px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;position:relative;">
+      <button onclick="document.getElementById('helpModal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;">x</button>
+      <h2 style="margin:0 0 16px;font-family:'Playfair Display',serif;color:#1A5C3A;">Comment obtenir les clés API gratuites</h2>
+      
+      <div style="background:#fff8e0;border-radius:10px;padding:14px;margin-bottom:16px;">
+        <div style="font-weight:700;color:#c07800;margin-bottom:8px;">🟡 Pixabay — 500 000 images gratuites</div>
+        <ol style="margin:0;padding-left:18px;line-height:1.8;color:#444;font-size:0.9rem;">
+          <li>Go to <a href="https://pixabay.com" target="_blank" style="color:#c07800">pixabay.com</a></li>
+          <li>Cliquez <strong>S'inscrire</strong> — compte gratuit</li>
+          <li>Go to <a href="https://pixabay.com/api/docs/" target="_blank" style="color:#c07800">pixabay.com/api/docs</a></li>
+          <li>Copiez la clé sous <strong>« Your API key »</strong></li>
+          <li>Collez dans le champ Pixabay et cliquez <strong>Test</strong></li>
+        </ol>
+      </div>
+
+      <div style="background:#fde8e8;border-radius:10px;padding:14px;margin-bottom:16px;">
+        <div style="font-weight:700;color:#c0392b;margin-bottom:8px;">🔴 Pexels — 8 000+ images de plantes</div>
+        <ol style="margin:0;padding-left:18px;line-height:1.8;color:#444;font-size:0.9rem;">
+          <li>Go to <a href="https://www.pexels.com" target="_blank" style="color:#c0392b">pexels.com</a></li>
+          <li>Cliquez <strong>S'inscrire</strong> — compte gratuit</li>
+          <li>Go to <a href="https://www.pexels.com/api/" target="_blank" style="color:#c0392b">pexels.com/api</a></li>
+          <li>Cliquez <strong>Get Started</strong> — remplissez le formulaire</li>
+          <li>Copiez la clé, collez-la, puis cliquez <strong>Test</strong></li>
+        </ol>
+      </div>
+
+      <div style="background:#e8f0ff;border-radius:10px;padding:14px;margin-bottom:16px;">
+        <div style="font-weight:700;color:#0063dc;margin-bottom:8px;">🔵 Flickr — millions de photos CC</div>
+        <ol style="margin:0;padding-left:18px;line-height:1.8;color:#444;font-size:0.9rem;">
+          <li>Allez sur <a href="https://www.flickr.com/services/api/keys/" target="_blank" style="color:#0063dc">flickr.com/services/api/keys</a></li>
+          <li>Connectez-vous ou créez un compte gratuit</li>
+          <li>Cliquez <strong>Request an API Key</strong> → Non commercial</li>
+          <li>Copiez la <strong>Key</strong> et collez-la ici</li>
+        </ol>
+      </div>
+      <div style="background:#f0f8e8;border-radius:10px;padding:14px;margin-bottom:16px;">
+        <div style="font-weight:700;color:#5a8a00;margin-bottom:8px;">🌿 Perenual — base de données plantes</div>
+        <ol style="margin:0;padding-left:18px;line-height:1.8;color:#444;font-size:0.9rem;">
+          <li>Allez sur <a href="https://perenual.com/docs/api" target="_blank" style="color:#5a8a00">perenual.com/docs/api</a></li>
+          <li>Créez un compte gratuit</li>
+          <li>Copiez votre clé API et collez-la ici</li>
+        </ol>
+      </div>
+      <div style="background:#e8faf0;border-radius:10px;padding:14px;margin-bottom:16px;">
+        <div style="font-weight:700;color:#00875a;margin-bottom:8px;">🌱 Trefle — botanique open source</div>
+        <ol style="margin:0;padding-left:18px;line-height:1.8;color:#444;font-size:0.9rem;">
+          <li>Allez sur <a href="https://trefle.io/users/sign_up" target="_blank" style="color:#00875a">trefle.io/users/sign_up</a></li>
+          <li>Créez un compte gratuit</li>
+          <li>Copiez votre token et collez-le ici</li>
+        </ol>
+      </div>
+      <div style="background:#e8f8ef;border-radius:10px;padding:14px;">
+        <div style="font-weight:700;color:#1A5C3A;margin-bottom:6px;">✓ Gratuit pour toujours — sans carte bancaire</div>
+        <div style="color:#555;font-size:0.88rem;line-height:1.6;">Vos clés sont sauvegardées automatiquement. iNaturalist et Wikimedia fonctionnent sans clé — totalement gratuit !</div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
