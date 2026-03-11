@@ -450,6 +450,118 @@ function closeLb(e){
 }
 document.getElementById('q').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
 
+// ── TEST FLICKR ───────────────────────────────────────────────────────────
+async function testFlickr(){
+  const key=document.getElementById('flickrKey').value.trim();
+  if(!key){setSt('flickr','Entrez la clé d abord','err');return;}
+  const btn=document.getElementById('testFlickr');
+  btn.disabled=true;btn.textContent='Test...';
+  setSt('flickr','Test en cours...','testing');
+  try{
+    const r=await fetch('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key='+key+'&text=rose&per_page=3&license=4,5,9,10&format=json&nojsoncallback=1');
+    const d=await r.json();
+    if(d.stat==='ok'){
+      setSt('flickr','OK! '+d.photos.total+' photos','ok');
+      pill('flickr',true);srcEnabled.flickr=true;
+      localStorage.setItem('nz_flickr',key);
+    } else {
+      setSt('flickr','Erreur: '+d.message,'err');
+      pill('flickr',false);srcEnabled.flickr=false;
+    }
+  }catch(e){setSt('flickr','Erreur: '+e.message,'err');pill('flickr',false);srcEnabled.flickr=false;}
+  btn.disabled=false;btn.textContent='Test ▶';
+}
+
+// ── TEST PERENUAL ─────────────────────────────────────────────────────────
+async function testPerenual(){
+  const key=document.getElementById('perenualKey').value.trim();
+  if(!key){setSt('perenual','Entrez la clé d abord','err');return;}
+  const btn=document.getElementById('testPerenual');
+  btn.disabled=true;btn.textContent='Test...';
+  setSt('perenual','Test en cours...','testing');
+  try{
+    const r=await fetch('https://perenual.com/api/species-list?key='+key+'&q=rose&per_page=3');
+    const d=await r.json();
+    if(d.data&&d.data.length>0){
+      setSt('perenual','OK! '+d.total+' plantes','ok');
+      pill('perenual',true);srcEnabled.perenual=true;
+      localStorage.setItem('nz_perenual',key);
+    } else {
+      setSt('perenual','Erreur: clé invalide','err');
+      pill('perenual',false);srcEnabled.perenual=false;
+    }
+  }catch(e){setSt('perenual','Erreur: '+e.message,'err');pill('perenual',false);srcEnabled.perenual=false;}
+  btn.disabled=false;btn.textContent='Test ▶';
+}
+
+// ── TEST TREFLE ───────────────────────────────────────────────────────────
+async function testTrefle(){
+  const key=document.getElementById('trefleKey').value.trim();
+  if(!key){setSt('trefle','Entrez la clé d abord','err');return;}
+  const btn=document.getElementById('testTrefle');
+  btn.disabled=true;btn.textContent='Test...';
+  setSt('trefle','Test en cours...','testing');
+  try{
+    const r=await fetch('https://trefle.io/api/v1/plants/search?token='+key+'&q=rose');
+    const d=await r.json();
+    if(d.data&&d.data.length>0){
+      setSt('trefle','OK! '+d.meta.total+' plantes','ok');
+      pill('trefle',true);srcEnabled.trefle=true;
+      localStorage.setItem('nz_trefle',key);
+    } else {
+      setSt('trefle','Erreur: clé invalide','err');
+      pill('trefle',false);srcEnabled.trefle=false;
+    }
+  }catch(e){setSt('trefle','Erreur: '+e.message,'err');pill('trefle',false);srcEnabled.trefle=false;}
+  btn.disabled=false;btn.textContent='Test ▶';
+}
+
+// ── SEARCH FLICKR ─────────────────────────────────────────────────────────
+async function searchFlickr(query,key){
+  const r=await fetch('https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key='+key+'&text='+encodeURIComponent(query)+'&per_page=10&license=4,5,9,10&content_type=1&media=photos&extras=url_m,license,owner_name&format=json&nojsoncallback=1');
+  const d=await r.json();
+  if(d.stat!=='ok')throw new Error(d.message);
+  return (d.photos.photo||[]).filter(p=>p.url_m).map(p=>({
+    src:'Flickr',badge:'flickr',name:query,
+    imgUrl:p.url_m,copyUrl:p.url_m,
+    pageUrl:'https://www.flickr.com/photos/'+p.owner+'/'+p.id,
+    license:'CC BY - Gratuit, attribution requise',
+    author:p.ownername||'Flickr',
+    lbInfo:'© '+p.ownername+' · Flickr CC · Usage commercial'
+  }));
+}
+
+// ── SEARCH PERENUAL ───────────────────────────────────────────────────────
+async function searchPerenual(query,key){
+  const r=await fetch('https://perenual.com/api/species-list?key='+key+'&q='+encodeURIComponent(query)+'&per_page=10');
+  const d=await r.json();
+  if(!d.data)throw new Error('Réponse invalide');
+  return (d.data||[]).filter(p=>p.default_image&&p.default_image.medium_url).map(p=>({
+    src:'Perenual',badge:'perenual',name:p.scientific_name||query,
+    imgUrl:p.default_image.medium_url,
+    copyUrl:p.default_image.original_url||p.default_image.medium_url,
+    pageUrl:'https://perenual.com/plant-species-database-search-finder/species/'+p.id,
+    license:'CC BY 2.0 - Gratuit, attribution requise',
+    author:'Perenual',
+    lbInfo:p.scientific_name+' · Perenual · CC BY 2.0'
+  }));
+}
+
+// ── SEARCH TREFLE ─────────────────────────────────────────────────────────
+async function searchTrefle(query,key){
+  const r=await fetch('https://trefle.io/api/v1/plants/search?token='+key+'&q='+encodeURIComponent(query));
+  const d=await r.json();
+  if(!d.data)throw new Error('Réponse invalide');
+  return (d.data||[]).filter(p=>p.image_url).map(p=>({
+    src:'Trefle',badge:'trefle',name:p.scientific_name||query,
+    imgUrl:p.image_url,copyUrl:p.image_url,
+    pageUrl:'https://trefle.io/plants/'+p.slug,
+    license:'CC BY 4.0 - Gratuit, attribution requise',
+    author:'Trefle / GBIF',
+    lbInfo:p.scientific_name+' · Trefle · CC BY 4.0'
+  }));
+}
+
 // ── LANGUAGE TOGGLE ───────────────────────────────────────────────────────
 let lang = 'fr';
 const i18n = {
