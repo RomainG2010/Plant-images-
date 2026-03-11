@@ -107,8 +107,8 @@ input[type=text]:focus{border-color:var(--gm);background:#fff;}
     </div>
 
     <div class="sources-bar">
-      <span class="src-pill inat on" id="pillInat" onclick="toggleSrc('inat')">✅ iNaturalist</span>
-      <span class="src-pill wiki on" id="pillWiki" onclick="toggleSrc('wiki')">✅ Wikimedia</span>
+      <span class="src-pill inat on" id="pillInat" onclick="toggleSrc('inat')">OK iNaturalist</span>
+      <span class="src-pill wiki on" id="pillWiki" onclick="toggleSrc('wiki')">OK Wikimedia</span>
       <span class="src-pill pixabay off" id="pillPixabay" onclick="toggleSrc('pixabay')">⬜ Pixabay</span>
       <span class="src-pill pexels off" id="pillPexels" onclick="toggleSrc('pexels')">⬜ Pexels</span>
     </div>
@@ -164,14 +164,14 @@ const srcEnabled={inat:true,wiki:true,pixabay:false,pexels:false};
 function toggleSrc(s){
   // For pixabay/pexels only toggle if key exists
   if((s==="pixabay"||s==="pexels")&&!document.getElementById(s+"Key").value.trim()){
-    document.getElementById("st"+s[0].toUpperCase()+s.slice(1)).textContent="⚠ Enter key first";
+    document.getElementById("st"+s[0].toUpperCase()+s.slice(1)).textContent="Enter key first";
     document.getElementById("st"+s[0].toUpperCase()+s.slice(1)).className="api-st err";
     return;
   }
   srcEnabled[s]=!srcEnabled[s];
   const el=document.getElementById("pill"+s[0].toUpperCase()+s.slice(1));
   const names={inat:"iNaturalist",wiki:"Wikimedia",pixabay:"Pixabay",pexels:"Pexels"};
-  el.textContent=(srcEnabled[s]?"✅ ":"❌ ")+names[s];
+  el.textContent=(srcEnabled[s]?"OK ":"Error: ")+names[s];
   el.className="src-pill "+s+" "+(srcEnabled[s]?"on":"off");
 }
 
@@ -184,7 +184,7 @@ function onKey(s){
 
 function pill(s,on){
   const el=document.getElementById('pill'+s[0].toUpperCase()+s.slice(1));
-  el.textContent = on ? `✅ ${s[0].toUpperCase()+s.slice(1)}` : `⬜ ${s[0].toUpperCase()+s.slice(1)}`;
+  el.textContent = on ? `OK ${s[0].toUpperCase()+s.slice(1)}` : `⬜ ${s[0].toUpperCase()+s.slice(1)}`;
   el.className = `src-pill ${s} ${on?'on':'off'}`;
 }
 
@@ -196,25 +196,25 @@ function setSt(s,msg,cls){
 // ── TEST PIXABAY ──────────────────────────────────────────────────────────
 async function testPixabay(){
   const key=document.getElementById('pixabayKey').value.trim();
-  if(!key){setSt('pixabay','⚠ Enter key first','err');return;}
+  if(!key){setSt('pixabay','Enter key first','err');return;}
   const btn=document.getElementById('testPixabay');
   btn.disabled=true;
-  btn.textContent='Testing…';
-  setSt('pixabay','Testing…','testing');
+  btn.textContent='Testing...';
+  setSt('pixabay','Testing...','testing');
   try{
     const r=await fetch('https://pixabay.com/api/?key='+key+'&q=rose&per_page=3&image_type=photo');
-    if(!r.ok){setSt('pixabay','❌ HTTP '+r.status,'err');btn.disabled=false;btn.textContent='Test ▶';return;}
+    if(!r.ok){setSt('pixabay','Error: HTTP '+r.status,'err');btn.disabled=false;btn.textContent='Test ▶';return;}
     const d=await r.json();
     if(d.totalHits>0){
-      setSt('pixabay','✅ Works! '+d.totalHits.toLocaleString()+' images','ok');
+      setSt('pixabay','OK! Works! '+d.totalHits.toLocaleString()+' images','ok');
       pill('pixabay',true); srcEnabled.pixabay=true;
       localStorage.setItem('nz_pixabay',key);
     } else {
-      setSt('pixabay','❌ Invalid key','err');
+      setSt('pixabay','Error: Invalid key','err');
       pill('pixabay',false); srcEnabled.pixabay=false;
     }
   }catch(e){
-    setSt('pixabay','❌ '+e.message,'err');
+    setSt('pixabay','Error: '+e.message,'err');
     pill('pixabay',false); srcEnabled.pixabay=false;
   }
   btn.disabled=false;btn.textContent='Test ▶';
@@ -223,22 +223,22 @@ async function testPixabay(){
 // ── TEST PEXELS ───────────────────────────────────────────────────────────
 async function testPexels(){
   const key=document.getElementById('pexelsKey').value.trim();
-  if(!key){setSt('pexels','⚠ Enter key first','err');return;}
+  if(!key){setSt('pexels','Enter key first','err');return;}
   const btn=document.getElementById('testPexels');
-  btn.disabled=true;btn.textContent='Testing…';
-  setSt('pexels','Testing…','testing');
+  btn.disabled=true;btn.textContent='Testing...';
+  setSt('pexels','Testing...','testing');
   try{
     const r=await fetch('https://api.pexels.com/v1/search?query=rose&per_page=3',{headers:{Authorization:key}});
-    if(r.status===401){setSt('pexels','❌ Invalid key','err');pill('pexels',false);srcEnabled.pexels=false;}
+    if(r.status===401){setSt('pexels','Error: Invalid key','err');pill('pexels',false);srcEnabled.pexels=false;}
     else{
       const d=await r.json();
       if(d.photos&&d.photos.length){
-        setSt('pexels','✅ Works! '+d.total_results+' images','ok');
+        setSt('pexels','OK! Works! '+d.total_results+' images','ok');
         pill('pexels',true);srcEnabled.pexels=true;
         localStorage.setItem('nz_pexels',key);
-      } else {setSt('pexels','❌ No results','err');pill('pexels',false);srcEnabled.pexels=false;}
+      } else {setSt('pexels','Error: No results','err');pill('pexels',false);srcEnabled.pexels=false;}
     }
-  }catch(e){setSt('pexels','❌ '+e.message,'err');pill('pexels',false);srcEnabled.pexels=false;}
+  }catch(e){setSt('pexels','Error: '+e.message,'err');pill('pexels',false);srcEnabled.pexels=false;}
   btn.disabled=false;btn.textContent='Test ▶';
 }
 
@@ -285,7 +285,7 @@ async function doSearch(){
     status.className='status err';
   } else {
     const srcs=[...new Set(results.map(r=>r.src))];
-    status.textContent=`✅ ${results.length} images from: ${srcs.join(', ')}`;
+    status.textContent=`OK ${results.length} images from: ${srcs.join(', ')}`;
     status.className='status ok';
     results.forEach(r=>grid.appendChild(makeCard(r)));
   }
@@ -402,7 +402,7 @@ function copyIt(btn,url){
   (navigator.clipboard?.writeText(text)||Promise.reject()).catch(()=>{
     const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
   });
-  btn.textContent='✅ Copied!';btn.classList.add('done');
+  btn.textContent='OK Copied!';btn.classList.add('done');
   setTimeout(()=>{btn.textContent='📋 Copy';btn.classList.remove('done');},2000);
 }
 
