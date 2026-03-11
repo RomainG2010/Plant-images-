@@ -163,7 +163,7 @@ const srcEnabled={inat:true,wiki:true,pixabay:false,pexels:false};
 
 function toggleSrc(s){
   // For pixabay/pexels only toggle if key exists
-  if((s==="pixabay"||s==="pexels")00260026!document.getElementById(s+"Key").value.trim()){
+  if((s==="pixabay"||s==="pexels")&&!document.getElementById(s+"Key").value.trim()){
     document.getElementById("st"+s[0].toUpperCase()+s.slice(1)).textContent="⚠ Enter key first";
     document.getElementById("st"+s[0].toUpperCase()+s.slice(1)).className="api-st err";
     return;
@@ -197,13 +197,16 @@ function setSt(s,msg,cls){
 async function testPixabay(){
   const key=document.getElementById('pixabayKey').value.trim();
   if(!key){setSt('pixabay','⚠ Enter key first','err');return;}
-  document.getElementById('testPixabay').disabled=true;
+  const btn=document.getElementById('testPixabay');
+  btn.disabled=true;
+  btn.textContent='Testing…';
   setSt('pixabay','Testing…','testing');
   try{
-    const r=await fetch(`https://pixabay.com/api/?key=${key}&q=rose&per_page=3&image_type=photo`);
+    const r=await fetch('https://pixabay.com/api/?key='+key+'&q=rose&per_page=3&image_type=photo');
+    if(!r.ok){setSt('pixabay','❌ HTTP '+r.status,'err');btn.disabled=false;btn.textContent='Test ▶';return;}
     const d=await r.json();
     if(d.totalHits>0){
-      setSt('pixabay',`✅ Works! ${d.totalHits.toLocaleString()} images`,'ok');
+      setSt('pixabay','✅ Works! '+d.totalHits.toLocaleString()+' images','ok');
       pill('pixabay',true); srcEnabled.pixabay=true;
       localStorage.setItem('nz_pixabay',key);
     } else {
@@ -214,28 +217,29 @@ async function testPixabay(){
     setSt('pixabay','❌ '+e.message,'err');
     pill('pixabay',false); srcEnabled.pixabay=false;
   }
-  document.getElementById('testPixabay').disabled=false;
+  btn.disabled=false;btn.textContent='Test ▶';
 }
 
 // ── TEST PEXELS ───────────────────────────────────────────────────────────
 async function testPexels(){
   const key=document.getElementById('pexelsKey').value.trim();
   if(!key){setSt('pexels','⚠ Enter key first','err');return;}
-  document.getElementById('testPexels').disabled=true;
+  const btn=document.getElementById('testPexels');
+  btn.disabled=true;btn.textContent='Testing…';
   setSt('pexels','Testing…','testing');
   try{
     const r=await fetch('https://api.pexels.com/v1/search?query=rose&per_page=3',{headers:{Authorization:key}});
-    if(r.status===401){setSt('pexels','❌ Invalid key','err');pill('pexels',false); srcEnabled.pexels=false;}
+    if(r.status===401){setSt('pexels','❌ Invalid key','err');pill('pexels',false);srcEnabled.pexels=false;}
     else{
       const d=await r.json();
-      if(d.photos?.length){
-        setSt('pexels',`✅ Works! ${d.total_results?.toLocaleString()} images`,'ok');
-        pill('pexels',true); srcEnabled.pexels=true;
+      if(d.photos&&d.photos.length){
+        setSt('pexels','✅ Works! '+d.total_results+' images','ok');
+        pill('pexels',true);srcEnabled.pexels=true;
         localStorage.setItem('nz_pexels',key);
-      } else {setSt('pexels','❌ No results','err');pill('pexels',false); srcEnabled.pexels=false;}
+      } else {setSt('pexels','❌ No results','err');pill('pexels',false);srcEnabled.pexels=false;}
     }
-  }catch(e){setSt('pexels','❌ '+e.message,'err');pill('pexels',false); srcEnabled.pexels=false;}
-  document.getElementById('testPexels').disabled=false;
+  }catch(e){setSt('pexels','❌ '+e.message,'err');pill('pexels',false);srcEnabled.pexels=false;}
+  btn.disabled=false;btn.textContent='Test ▶';
 }
 
 // ── Plant chips ───────────────────────────────────────────────────────────
