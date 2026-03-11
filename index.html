@@ -273,8 +273,8 @@ async function doSearch(){
   const searches=[];
   if(srcEnabled.inat) searches.push(searchINat(query));
   if(srcEnabled.wiki) searches.push(searchWikimedia(query));
-  if(pixKey)searches.push(searchPixabay(query,pixKey));
-  if(pexKey)searches.push(searchPexels(query,pexKey));
+  if(srcEnabled.pixabay && pixKey) searches.push(searchPixabay(query,pixKey));
+  if(srcEnabled.pexels && pexKey) searches.push(searchPexels(query,pexKey));
 
   const settled=await Promise.allSettled(searches);
   const results=settled.flatMap(r=>r.status==='fulfilled'?r.value:[]);
